@@ -35,7 +35,7 @@ public class TelaPrincipalController implements Initializable{
 	
 	@FXML
 	public void onMenuItemAutomovelAction() {
-		System.out.println("onMenuItemAutomovelAction");
+		loadView("/gui/AutomovelList.fxml");
 	}
 	
 	@FXML
