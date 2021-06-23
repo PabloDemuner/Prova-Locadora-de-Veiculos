@@ -15,6 +15,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import modelo.services.AutomovelService;
 
 public class TelaPrincipalController implements Initializable{
 	//@FXML para SceneBuilder reconhecer os menus
@@ -35,7 +36,7 @@ public class TelaPrincipalController implements Initializable{
 	
 	@FXML
 	public void onMenuItemAutomovelAction() {
-		loadView("/gui/AutomovelList.fxml");
+		loadView2("/gui/AutomovelList.fxml");
 	}
 	
 	@FXML
@@ -72,4 +73,34 @@ public class TelaPrincipalController implements Initializable{
 			Alertas.showAlert("IO Exception", "Erro ao carregar a página", exception.getMessage(), AlertType.ERROR);
 		}
 	}
+	
+	/*Função que abre/carrega outra tela
+	 * synchronized a sincronização de todas as telas durante o multitreding
+	 */
+	private synchronized void loadView2(String absoluteName) {
+		
+		//Carrega a View dentro da tela principal
+		try {
+			//Manipulação de acesso as janelas a partir da janela principal(ScrollPane)
+			FXMLLoader loader= new FXMLLoader(getClass().getResource(absoluteName));
+			VBox newVBox = loader.load();
+			
+			Scene mainScene = Main.getMainScene();
+			VBox mainVBox = (VBox) ((ScrollPane) mainScene.getRoot()).getContent();
+			
+			Node mainMenu = mainVBox.getChildren().get(0);
+			mainVBox.getChildren().clear();
+			mainVBox.getChildren().add(mainMenu);
+			mainVBox.getChildren().addAll(newVBox.getChildren());
+			
+			AutomovelListController  automovelListController = loader.getController();
+			//Injeção de dependencia
+			automovelListController.setAutomovelService(new AutomovelService());
+			automovelListController.updateTableView();
+		}
+		catch (IOException exception) {
+			Alertas.showAlert("IO Exception", "Erro ao carregar a página", exception.getMessage(), AlertType.ERROR);
+		}
+	}
+
 }
