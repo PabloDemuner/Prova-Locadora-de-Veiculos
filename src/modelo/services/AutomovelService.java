@@ -1,17 +1,16 @@
 package modelo.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import model.dao.AutomovelDao;
+import model.dao.DaoFactory;
 import modelo.entidades.Automovel;
 
 public class AutomovelService {
+	
+	private AutomovelDao automovelDao = DaoFactory.createAutomovelDao();
 
 	public List<Automovel> findAll() {
-		List<Automovel> list = new ArrayList<>();
-		list.add(new Automovel( 1, "March", "Nissan"));
-		list.add(new Automovel( 2, "Voyage", "Vowksvagen"));
-		list.add(new Automovel( 3, "Toro", "Fiat"));
-		return list;
+		return automovelDao.findAll();
 	}
 }
