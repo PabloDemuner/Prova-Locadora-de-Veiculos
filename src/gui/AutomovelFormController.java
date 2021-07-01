@@ -9,9 +9,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import modelo.entidades.Automovel;
 
 public class AutomovelFormController implements Initializable{
 
+	private Automovel automovel;
+	
 	@FXML
 	private TextField txtId;
 	
@@ -40,6 +43,10 @@ public class AutomovelFormController implements Initializable{
 		System.out.println("OnBtCancel");
 	}
 	
+	public void setAutomovel(Automovel automovel) {
+		this.automovel = automovel;
+	}
+	
 	private void initializeNodes() {
 		Constraints.setTextFieldInteger(txtId);
 		Constraints.setTextFieldMaxLength(txtNome, 60);
@@ -48,8 +55,16 @@ public class AutomovelFormController implements Initializable{
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		initializeNodes();
-		
+		initializeNodes();	
 	}
-
+	
+	public void atualizarAutomovel() {
+		if (automovel == null) {
+			throw new IllegalStateException("O campo está vazio");
+		}
+		
+		txtId.setText(String.valueOf(automovel.getId()));
+		txtNome.setText(automovel.getNome());
+		txtMarca.setText(automovel.getMarca());
+	}
 }

@@ -54,7 +54,8 @@ public class AutomovelListController implements Initializable {
 	@FXML
 	public void onBtAction(ActionEvent event) {
 		Stage parentStage = Utils.paucoAtual(event);
-		createDilogForm("/gui/AutomovelForm.fxml", parentStage);
+		Automovel obj = new Automovel();
+		createDilogForm(obj, "/gui/AutomovelForm.fxml", parentStage);
 	}
 
 	// Injeção de dependencia do AutomovelService
@@ -91,10 +92,14 @@ public class AutomovelListController implements Initializable {
 	}
 	
 	//Metodo implementado para instanciar janela de dialogos
-	private void createDilogForm(String absoluteName, Stage parentStage) {
+	private void createDilogForm(Automovel obj, String absoluteName, Stage parentStage) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			Pane pane = loader.load();
+			
+			AutomovelFormController automovelFormController = loader.getController();
+			automovelFormController.setAutomovel(obj);
+			automovelFormController.atualizarAutomovel();
 			
 			Stage dialogStage = new Stage();
 			
