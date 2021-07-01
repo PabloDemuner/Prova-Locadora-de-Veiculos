@@ -1,9 +1,12 @@
 package gui;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import db.DbException;
+import gui.listeners.DataChangeListener;
 import gui.util.Alertas;
 import gui.util.Constraints;
 import gui.util.Utils;
@@ -22,6 +25,8 @@ public class AutomovelFormController implements Initializable {
 	private Automovel automovel;
 	
 	private AutomovelService automovelService;
+	
+	private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
 	@FXML
 	private TextField txtId;
@@ -52,6 +57,8 @@ public class AutomovelFormController implements Initializable {
 		try {
 			automovel = getSalvaAutomovel();
 			automovelService.saveOrUpdate(automovel);
+			//Atualiza os dados da tela prnicipal ao clicar em salvar
+			notificaDadosDaTela();
 			//Para fechar a janela
 			Utils.paucoAtual(event).close();
 		} 
@@ -72,6 +79,10 @@ public class AutomovelFormController implements Initializable {
 	
 	public void setAutomovelService(AutomovelService automovelService) {
 		this.automovelService = automovelService;
+	}
+	
+	public void atualizaDadosDaTela(DataChangeListener dataChangeListener) {
+		dataChangeListeners.add(dataChangeListener);
 	}
 
 	private void initializeNodes() {
@@ -103,5 +114,11 @@ public class AutomovelFormController implements Initializable {
 		obj.setMarca(txtMarca.getText());
 		
 		return obj;
+	}
+	
+	private void notificaDadosDaTela() {
+		for (DataChangeListener dataChangeListener : dataChangeListeners) {
+			dataChangeListener.disparaAtualizacaoEventos();
+		}
 	}
 }

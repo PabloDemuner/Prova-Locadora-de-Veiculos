@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import application.Main;
+import gui.listeners.DataChangeListener;
 import gui.util.Alertas;
 import gui.util.Utils;
 import javafx.collections.FXCollections;
@@ -26,7 +27,7 @@ import javafx.stage.Stage;
 import modelo.entidades.Automovel;
 import modelo.services.AutomovelService;
 
-public class AutomovelListController implements Initializable {
+public class AutomovelListController implements Initializable, DataChangeListener {
 
 	private AutomovelService automovelService;
 
@@ -101,6 +102,8 @@ public class AutomovelListController implements Initializable {
 			automovelFormController.setAutomovel(obj);
 			//Injeção do AutomovelService
 			automovelFormController.setAutomovelService(new AutomovelService());
+			//Observer
+			automovelFormController.atualizaDadosDaTela(this);
 			automovelFormController.atualizarAutomovel();
 
 			Stage dialogStage = new Stage();
@@ -116,5 +119,10 @@ public class AutomovelListController implements Initializable {
 		} catch (IOException e) {
 			Alertas.showAlert("IO Exception", "Erro ao carregar a janela", e.getMessage(), AlertType.ERROR);
 		}
+	}
+
+	@Override
+	public void disparaAtualizacaoEventos() {
+		updateTableView();
 	}
 }
