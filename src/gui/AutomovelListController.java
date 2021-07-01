@@ -55,7 +55,7 @@ public class AutomovelListController implements Initializable {
 	public void onBtAction(ActionEvent event) {
 		Stage parentStage = Utils.paucoAtual(event);
 		Automovel obj = new Automovel();
-		createDilogForm(obj, "/gui/AutomovelForm.fxml", parentStage);
+		createDialogForm(obj, "/gui/AutomovelForm.fxml", parentStage);
 	}
 
 	// Injeção de dependencia do AutomovelService
@@ -84,36 +84,37 @@ public class AutomovelListController implements Initializable {
 	// ObservableList
 	public void updateTableView() {
 		if (automovelService == null) {
-			throw new IllegalStateException("AutomovelService esta nulo ");
+			throw new IllegalStateException("AutomovelService esta vazio ");
 		}
 		List<Automovel> list = automovelService.findAll();
 		obsList = FXCollections.observableArrayList(list);
 		tableViewAutomovel.setItems(obsList);
 	}
-	
-	//Metodo implementado para instanciar janela de dialogos
-	private void createDilogForm(Automovel obj, String absoluteName, Stage parentStage) {
+
+	// Metodo implementado para instanciar janela de dialogos
+	private void createDialogForm(Automovel obj, String absoluteName, Stage parentStage) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			Pane pane = loader.load();
-			
+
 			AutomovelFormController automovelFormController = loader.getController();
 			automovelFormController.setAutomovel(obj);
+			//Injeção do AutomovelService
+			automovelFormController.setAutomovelService(new AutomovelService());
 			automovelFormController.atualizarAutomovel();
-			
+
 			Stage dialogStage = new Stage();
-			
+
 			dialogStage.setTitle("Digite os dados do Automóvel");
 			dialogStage.setScene(new Scene(pane));
-			//Janela não pode ser redimencionada
+			// Janela não pode ser redimencionada
 			dialogStage.setResizable(false);
 			dialogStage.initOwner(parentStage);
-			//Para a janela ficar travada
+			// Para a janela ficar travada
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.showAndWait();
-		}
-		catch(IOException e) {
-			Alertas.showAlert("IO Exception", "Erro ao carregar a janela", e.getMessage(), AlertType.ERROR);	
+		} catch (IOException e) {
+			Alertas.showAlert("IO Exception", "Erro ao carregar a janela", e.getMessage(), AlertType.ERROR);
 		}
 	}
 }

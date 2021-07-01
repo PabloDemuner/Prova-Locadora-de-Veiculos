@@ -13,4 +13,14 @@ public class AutomovelService {
 	public List<Automovel> findAll() {
 		return automovelDao.findAll();
 	}
+	
+	//Metodo para inserir ou atualizar um automovel
+	public void saveOrUpdate(Automovel obj) {
+		if (obj.getId() == null) {
+			automovelDao.insert(obj);
+		}
+		else {
+			automovelDao.update(obj);
+		}
+	}
 }

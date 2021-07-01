@@ -86,11 +86,12 @@ public class AutomovelDaoJDBC implements AutomovelDao {
 				"INSERT INTO automovel " +
 				"(Nome, Marca) " +
 				"VALUES " +
-				"(?)", 
+				"(?, ?)", 
 				Statement.RETURN_GENERATED_KEYS);
 
 			st.setString(1, obj.getNome());
-
+			st.setString(2, obj.getMarca());
+			
 			int rowsAffected = st.executeUpdate();
 			
 			if (rowsAffected > 0) {
