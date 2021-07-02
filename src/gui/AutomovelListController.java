@@ -3,12 +3,15 @@ package gui;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import application.Main;
+import db.DbIntegrityException;
 import gui.listeners.DataChangeListener;
 import gui.util.Alertas;
 import gui.util.Utils;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,6 +21,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -45,7 +50,15 @@ public class AutomovelListController implements Initializable, DataChangeListene
 
 	@FXML
 	private TableColumn<Automovel, String> tableColumMarca;
+	
+	//Coluna de Edição de Automovel
+	@FXML
+	private TableColumn<Automovel, Automovel> tableColumEdit;
 
+	//Coluna de Deleção de um Autmovel
+	@FXML
+	private TableColumn<Automovel, Automovel> tableColumDelete;
+	
 	@FXML
 	private Button buttonNew;
 
@@ -90,6 +103,9 @@ public class AutomovelListController implements Initializable, DataChangeListene
 		List<Automovel> list = automovelService.findAll();
 		obsList = FXCollections.observableArrayList(list);
 		tableViewAutomovel.setItems(obsList);
+		//Acrecenta o botão edit na janela
+		editaAutomovel();
+		deletaAutomovel();
 	}
 
 	// Metodo implementado para instanciar janela de dialogos
@@ -124,5 +140,61 @@ public class AutomovelListController implements Initializable, DataChangeListene
 	@Override
 	public void disparaAtualizacaoEventos() {
 		updateTableView();
+	}
+	/*https://stackoverflow.com/questions/32282230/fxml-javafx-8-tableview-make-a-delete-button-in-each-row-and-delete-the-row-a
+	 * Codigo que instancia e configura o botão de editar os automoveis
+	 */
+	private void editaAutomovel() {
+		tableColumEdit.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+		tableColumEdit.setCellFactory(param -> new TableCell<Automovel, Automovel>() {
+			private final Button button = new Button("editar");
+
+			@Override
+			protected void updateItem(Automovel obj, boolean empty) {
+				super.updateItem(obj, empty);
+				if (obj == null) {
+					setGraphic(null);
+					return;
+				}
+				setGraphic(button);
+				button.setOnAction(
+						event -> createDialogForm(obj, "/gui/AutomovelForm.fxml", Utils.paucoAtual(event)));
+			}
+		});
+	}
+	//Codigo que instancia e configura o botão de deletar os automoveis
+	private void deletaAutomovel() {
+		tableColumDelete.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+		tableColumDelete.setCellFactory(param -> new TableCell<Automovel, Automovel>() {
+			private final Button button = new Button("deletar");
+
+			@Override
+			protected void updateItem(Automovel obj, boolean empty) {
+				super.updateItem(obj, empty);
+				if (obj == null) {
+					setGraphic(null);
+					return;
+				}
+				setGraphic(button);
+				button.setOnAction(event -> deleteEntity(obj));
+			}
+		});
+	}
+		//Metodo para remover uma entidade
+	private void deleteEntity(Automovel obj) {
+		Optional<ButtonType> result = Alertas.showConfirmation("Confirmação", "Deseja realmente deletar?");
+		
+		if(result.get() == ButtonType.OK) {
+			if (automovelService == null) {
+				throw new IllegalStateException("AutomovelService esta vazio ");
+			}
+			try {
+				automovelService.delete(obj);
+				updateTableView();
+			}
+			catch (DbIntegrityException exception) {
+				Alertas.showAlert("Erro ao remover o Automovel", null, exception.getMessage(), AlertType.ERROR);
+			}
+		}
 	}
 }

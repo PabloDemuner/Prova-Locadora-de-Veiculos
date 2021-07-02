@@ -121,9 +121,10 @@ public class AutomovelDaoJDBC implements AutomovelDao {
 				"UPDATE automovel " 
 				+"SET Nome = ?, Marca = ? " 
 				+"WHERE Id = ?");
-
+			
 			st.setString(1, obj.getNome());
-			st.setInt(2, obj.getId());
+			st.setString(2, obj.getMarca());
+			st.setInt(3, obj.getId());
 
 			st.executeUpdate();
 		}

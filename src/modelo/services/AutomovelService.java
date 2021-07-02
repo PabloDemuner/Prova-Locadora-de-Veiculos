@@ -23,4 +23,9 @@ public class AutomovelService {
 			automovelDao.update(obj);
 		}
 	}
+	
+	//Deleta Automovel do BD
+	public void delete(Automovel obj) {
+		automovelDao.deleteById(obj.getId());
+	}
 }
