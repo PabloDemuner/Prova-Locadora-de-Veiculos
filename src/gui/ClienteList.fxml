@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="299.0" prefWidth="492.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ClienteListController">
+   <children>
+      <Label prefHeight="32.0" prefWidth="186.0" text="Registro de Automóveis">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <padding>
+            <Insets left="5.0" top="5.0" />
+         </padding>
+      </Label>
+      <ToolBar prefHeight="40.0" prefWidth="200.0">
+        <items>
+          <Button fx:id="buttonNew" mnemonicParsing="false" onAction="#onBtAction" text="Novo" />
+        </items>
+      </ToolBar>
+      <TableView fx:id="tableViewCliente" prefHeight="200.0" prefWidth="200.0">
+        <columns>
+          <TableColumn fx:id="tableColumId" prefWidth="75.0" text="Id" />
+          <TableColumn fx:id="tableColumNome" prefWidth="75.0" text="Nome" />
+            <TableColumn fx:id="tableColumMarca" prefWidth="75.0" text="Marca" />
+            <TableColumn fx:id="tableColumEdit" prefWidth="75.0" />
+            <TableColumn fx:id="tableColumDelete" prefWidth="75.0" />
+        </columns>
+      </TableView>
+   </children>
+</VBox>

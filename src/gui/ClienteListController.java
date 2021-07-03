@@ -29,52 +29,52 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import modelo.entidades.Automovel;
-import modelo.services.AutomovelService;
+import modelo.entidades.Cliente;
+import modelo.services.ClienteService;
 
-public class AutomovelListController implements Initializable, DataChangeListener {
+public class ClienteListController implements Initializable, DataChangeListener {
 
-	private AutomovelService automovelService;
+	private ClienteService clienteService;
 
 	// @FXML para SceneBuilder reconhecer os menus
-	// Declaração da tabela Automovel
+	// Declaração da tabela Cliente
 	@FXML
-	private TableView<Automovel> tableViewAutomovel;
+	private TableView<Cliente> tableViewCliente;
 
 	// Declaração das colunas da tabela
 	@FXML
-	private TableColumn<Automovel, Integer> tableColumId;
+	private TableColumn<Cliente, Integer> tableColumId;
 
 	@FXML
-	private TableColumn<Automovel, String> tableColumNome;
+	private TableColumn<Cliente, String> tableColumNome;
 
 	@FXML
-	private TableColumn<Automovel, String> tableColumMarca;
+	private TableColumn<Cliente, String> tableColumMarca;
 	
-	//Coluna de Edição de Automovel
+	//Coluna de Edição de Cliente
 	@FXML
-	private TableColumn<Automovel, Automovel> tableColumEdit;
+	private TableColumn<Cliente, Cliente> tableColumEdit;
 
 	//Coluna de Deleção de um Autmovel
 	@FXML
-	private TableColumn<Automovel, Automovel> tableColumDelete;
+	private TableColumn<Cliente, Cliente> tableColumDelete;
 	
 	@FXML
 	private Button buttonNew;
 
-	private ObservableList<Automovel> obsList;
+	private ObservableList<Cliente> obsList;
 
 	// Tratamento de eventos do botão
 	@FXML
 	public void onBtAction(ActionEvent event) {
 		Stage parentStage = Utils.paucoAtual(event);
-		Automovel obj = new Automovel();
-		createDialogForm(obj, "/gui/AutomovelForm.fxml", parentStage);
+		Cliente obj = new Cliente();
+		createDialogForm(obj, "/gui/ClienteForm.fxml", parentStage);
 	}
 
-	// Injeção de dependencia do AutomovelService
-	public void setAutomovelService(AutomovelService automovelService) {
-		this.automovelService = automovelService;
+	// Injeção de dependencia do ClienteService
+	public void setClienteService(ClienteService clienteService) {
+		this.clienteService = clienteService;
 	}
 
 	@Override
@@ -89,53 +89,53 @@ public class AutomovelListController implements Initializable, DataChangeListene
 		tableColumNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
 		tableColumMarca.setCellValueFactory(new PropertyValueFactory<>("marca"));
 
-		// Metodo para a tabela Automovel ocupar toda a janela
+		// Metodo para a tabela Cliente ocupar toda a janela
 		Stage stage = (Stage) Main.getMainScene().getWindow();
-		tableViewAutomovel.prefHeightProperty().bind(stage.heightProperty());
+		tableViewCliente.prefHeightProperty().bind(stage.heightProperty());
 	}
 
-	// Metodo responsável por acessar o AutomovelService e carregar no
+	// Metodo responsável por acessar o ClienteService e carregar no
 	// ObservableList
 	public void updateTableView() {
-		if (automovelService == null) {
-			throw new IllegalStateException("AutomovelService esta vazio ");
+		if (clienteService == null) {
+			throw new IllegalStateException("ClienteService esta vazio ");
 		}
-		List<Automovel> list = automovelService.findAll();
+		List<Cliente> list = clienteService.findAll();
 		obsList = FXCollections.observableArrayList(list);
-		tableViewAutomovel.setItems(obsList);
+		tableViewCliente.setItems(obsList);
 		//Acrecenta o botão editar na janela
-		editaAutomovel();
+		editaCliente();
 		//Acrecenta o botão deletar na janela
-		deletaAutomovel();
+		deletaCliente();
 	}
 
 	// Metodo implementado para instanciar janela de dialogos
-	private void createDialogForm(Automovel obj, String absoluteName, Stage parentStage) {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
-			Pane pane = loader.load();
-
-			AutomovelFormController automovelFormController = loader.getController();
-			automovelFormController.setAutomovel(obj);
-			//Injeção do AutomovelService
-			automovelFormController.setAutomovelService(new AutomovelService());
-			//Observer
-			automovelFormController.atualizaDadosDaTela(this);
-			automovelFormController.atualizarAutomovel();
-
-			Stage dialogStage = new Stage();
-
-			dialogStage.setTitle("Digite os dados do Automóvel");
-			dialogStage.setScene(new Scene(pane));
-			// Janela não pode ser redimencionada
-			dialogStage.setResizable(false);
-			dialogStage.initOwner(parentStage);
-			// Para a janela ficar travada
-			dialogStage.initModality(Modality.WINDOW_MODAL);
-			dialogStage.showAndWait();
-		} catch (IOException e) {
-			Alertas.showAlert("IO Exception", "Erro ao carregar a janela", e.getMessage(), AlertType.ERROR);
-		}
+	private void createDialogForm(Cliente obj, String absoluteName, Stage parentStage) {
+//		try {
+//			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+//			Pane pane = loader.load();
+//
+//			ClienteFormController clienteFormController = loader.getController();
+//			clienteFormController.setCliente(obj);
+//			//Injeção do ClienteService
+//			clienteFormController.setClienteService(new ClienteService());
+//			//Observer
+//			clienteFormController.atualizaDadosDaTela(this);
+//			clienteFormController.atualizarCliente();
+//
+//			Stage dialogStage = new Stage();
+//
+//			dialogStage.setTitle("Digite os dados do Automóvel");
+//			dialogStage.setScene(new Scene(pane));
+//			// Janela não pode ser redimencionada
+//			dialogStage.setResizable(false);
+//			dialogStage.initOwner(parentStage);
+//			// Para a janela ficar travada
+//			dialogStage.initModality(Modality.WINDOW_MODAL);
+//			dialogStage.showAndWait();
+//		} catch (IOException e) {
+//			Alertas.showAlert("IO Exception", "Erro ao carregar a janela", e.getMessage(), AlertType.ERROR);
+//		}
 	}
 
 	@Override
@@ -145,13 +145,13 @@ public class AutomovelListController implements Initializable, DataChangeListene
 	/*https://stackoverflow.com/questions/32282230/fxml-javafx-8-tableview-make-a-delete-button-in-each-row-and-delete-the-row-a
 	 * Codigo que instancia e configura o botão de editar os automoveis
 	 */
-	private void editaAutomovel() {
+	private void editaCliente() {
 		tableColumEdit.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
-		tableColumEdit.setCellFactory(param -> new TableCell<Automovel, Automovel>() {
+		tableColumEdit.setCellFactory(param -> new TableCell<Cliente, Cliente>() {
 			private final Button button = new Button("editar");
 
 			@Override
-			protected void updateItem(Automovel obj, boolean empty) {
+			protected void updateItem(Cliente obj, boolean empty) {
 				super.updateItem(obj, empty);
 				if (obj == null) {
 					setGraphic(null);
@@ -159,18 +159,18 @@ public class AutomovelListController implements Initializable, DataChangeListene
 				}
 				setGraphic(button);
 				button.setOnAction(
-						event -> createDialogForm(obj, "/gui/AutomovelForm.fxml", Utils.paucoAtual(event)));
+						event -> createDialogForm(obj, "/gui/ClienteForm.fxml", Utils.paucoAtual(event)));
 			}
 		});
 	}
 	//Codigo que instancia e configura o botão de deletar os automoveis
-	private void deletaAutomovel() {
+	private void deletaCliente() {
 		tableColumDelete.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
-		tableColumDelete.setCellFactory(param -> new TableCell<Automovel, Automovel>() {
+		tableColumDelete.setCellFactory(param -> new TableCell<Cliente, Cliente>() {
 			private final Button button = new Button("deletar");
 
 			@Override
-			protected void updateItem(Automovel obj, boolean empty) {
+			protected void updateItem(Cliente obj, boolean empty) {
 				super.updateItem(obj, empty);
 				if (obj == null) {
 					setGraphic(null);
@@ -182,19 +182,19 @@ public class AutomovelListController implements Initializable, DataChangeListene
 		});
 	}
 		//Metodo para remover uma entidade
-	private void deleteEntity(Automovel obj) {
+	private void deleteEntity(Cliente obj) {
 		Optional<ButtonType> result = Alertas.showConfirmation("Confirmação", "Deseja realmente deletar?");
 		
 		if(result.get() == ButtonType.OK) {
-			if (automovelService == null) {
-				throw new IllegalStateException("AutomovelService esta vazio ");
+			if (clienteService == null) {
+				throw new IllegalStateException("ClienteService esta vazio ");
 			}
 			try {
-				automovelService.delete(obj);
+				clienteService.delete(obj);
 				updateTableView();
 			}
 			catch (DbIntegrityException exception) {
-				Alertas.showAlert("Erro ao remover o Automovel", null, exception.getMessage(), AlertType.ERROR);
+				Alertas.showAlert("Erro ao remover o Cliente", null, exception.getMessage(), AlertType.ERROR);
 			}
 		}
 	}

@@ -10,6 +10,7 @@ public class AutomovelService {
 	
 	private AutomovelDao automovelDao = DaoFactory.createAutomovelDao();
 
+	//Busca de todos os automoveis
 	public List<Automovel> findAll() {
 		return automovelDao.findAll();
 	}

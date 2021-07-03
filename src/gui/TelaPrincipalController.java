@@ -17,6 +17,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import modelo.services.AutomovelService;
+import modelo.services.ClienteService;
 
 public class TelaPrincipalController implements Initializable {
 	// @FXML para SceneBuilder reconhecer os menus
@@ -32,7 +33,11 @@ public class TelaPrincipalController implements Initializable {
 	// Declaração dos metodos de ações dos atributos de menus
 	@FXML
 	public void onMenuItemClienteAction() {
-		System.out.println("onMenuItemClienteAction");
+		// expressão lambda para inicializar o AutomovelListController
+				loadView("/gui/ClienteList.fxml", (ClienteListController clienteListController) -> {
+					clienteListController.setClienteService(new ClienteService());
+					clienteListController.updateTableView();
+				});
 	}
 
 	@FXML
