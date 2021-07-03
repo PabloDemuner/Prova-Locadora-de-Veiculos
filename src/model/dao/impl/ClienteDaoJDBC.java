@@ -139,7 +139,8 @@ public class ClienteDaoJDBC implements ClienteDao {
 		obj.setId(rs.getInt("Id"));
 		obj.setNome(rs.getString("Nome"));
 		obj.setEmail(rs.getString("Email"));
-		obj.setDataNasc(rs.getDate("DataNasc"));
+		obj.setDataNasc(new java.util.Date(rs.getTimestamp("DataNasc").getTime())); 
+		//obj.setDataNasc(rs.getDate("DataNasc"));
 		obj.setAutomovel(aut);
 		return obj;
 	}
