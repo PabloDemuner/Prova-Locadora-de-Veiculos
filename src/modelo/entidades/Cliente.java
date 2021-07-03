@@ -1,6 +1,7 @@
 package modelo.entidades;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Cliente implements Serializable {
 
@@ -9,17 +10,27 @@ public class Cliente implements Serializable {
 	private Integer id;
 	private String nome;
 	private String email;
+	private Date dataNasc;
 
 	private Automovel automovel;
 
 	public Cliente() {
 	}
 
-	public Cliente(Integer id, String nome, String email, Automovel automovel) {
+	public Cliente(Date dataNasc, Integer id, String nome, String email, Automovel automovel) {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
+		this.dataNasc = dataNasc;
 		this.automovel = automovel;
+	}
+
+	public Date getDataNasc() {
+		return dataNasc;
+	}
+
+	public void setDataNasc(Date dataNasc) {
+		this.dataNasc = dataNasc;
 	}
 
 	public Integer getId() {

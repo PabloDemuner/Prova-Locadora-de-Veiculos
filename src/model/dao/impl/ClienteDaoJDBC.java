@@ -30,14 +30,15 @@ public class ClienteDaoJDBC implements ClienteDao {
 		try {
 			st = conn.prepareStatement(
 					"INSERT INTO cliente "
-					+ "(Nome, Email, AutomovelId) "
+					+ "(Nome, Email, DataNasc, AutomovelId) "
 					+ "VALUES "
-					+ "(?, ?, ?, ?, ?)",
+					+ "(?, ?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 			
 			st.setString(1, obj.getNome());
 			st.setString(2, obj.getEmail());
-			st.setInt(3, obj.getAutomovel().getId());
+			st.setDate(3, new java.sql.Date(obj.getDataNasc().getTime()));
+			st.setInt(4, obj.getAutomovel().getId());
 			
 			int rowsAffected = st.executeUpdate();
 			
@@ -67,13 +68,14 @@ public class ClienteDaoJDBC implements ClienteDao {
 		try {
 			st = conn.prepareStatement(
 					"UPDATE cliente "
-							+ "SET Nome = ?, Email = ?, AutomovelId = ? "
+							+ "SET Nome = ?, Email = ?, DataNasc = ? AutomovelId = ? "
 					+ "WHERE Id = ?");
 			
 			st.setString(1, obj.getNome());
 			st.setString(2, obj.getEmail());
-			st.setInt(3, obj.getAutomovel().getId());
-			st.setInt(4, obj.getId());
+			st.setDate(3, new java.sql.Date(obj.getDataNasc().getTime()));
+			st.setInt(4, obj.getAutomovel().getId());
+			st.setInt(5, obj.getId());
 			
 			st.executeUpdate();
 		}
@@ -109,7 +111,7 @@ public class ClienteDaoJDBC implements ClienteDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT cliente.*,automovel.Nome as DepNome "
+					"SELECT cliente.*,automovel.Nome as AutNome "
 					+ "FROM cliente INNER JOIN automovel "
 					+ "ON cliente.AutomovelId = automovel.Id "
 					+ "WHERE cliente.Id = ?");
@@ -117,8 +119,8 @@ public class ClienteDaoJDBC implements ClienteDao {
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			if (rs.next()) {
-				Automovel dep = instantiateAutomovel(rs);
-				Cliente obj = instantiateCliente(rs, dep);
+				Automovel aut = instantiateAutomovel(rs);
+				Cliente obj = instantiateCliente(rs, aut);
 				return obj;
 			}
 			return null;
@@ -132,20 +134,21 @@ public class ClienteDaoJDBC implements ClienteDao {
 		}
 	}
 
-	private Cliente instantiateCliente(ResultSet rs, Automovel dep) throws SQLException {
+	private Cliente instantiateCliente(ResultSet rs, Automovel aut) throws SQLException {
 		Cliente obj = new Cliente();
 		obj.setId(rs.getInt("Id"));
 		obj.setNome(rs.getString("Nome"));
 		obj.setEmail(rs.getString("Email"));
-		obj.setAutomovel(dep);
+		obj.setDataNasc(rs.getDate("DataNasc"));
+		obj.setAutomovel(aut);
 		return obj;
 	}
 
 	private Automovel instantiateAutomovel(ResultSet rs) throws SQLException {
-		Automovel dep = new Automovel();
-		dep.setId(rs.getInt("AutomovelId"));
-		dep.setNome(rs.getString("DepNome"));
-		return dep;
+		Automovel aut = new Automovel();
+		aut.setId(rs.getInt("AutomovelId"));
+		aut.setNome(rs.getString("AutNome"));
+		return aut;
 	}
 
 	@Override
@@ -154,7 +157,7 @@ public class ClienteDaoJDBC implements ClienteDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT cliente.*,automovel.Nome as DepNome "
+					"SELECT cliente.*,automovel.Nome as AutNome "
 					+ "FROM cliente INNER JOIN automovel "
 					+ "ON cliente.AutomovelId = automovel.Id "
 					+ "ORDER BY Nome");
@@ -166,14 +169,14 @@ public class ClienteDaoJDBC implements ClienteDao {
 			
 			while (rs.next()) {
 				
-				Automovel dep = map.get(rs.getInt("AutomovelId"));
+				Automovel aut = map.get(rs.getInt("AutomovelId"));
 				
-				if (dep == null) {
-					dep = instantiateAutomovel(rs);
-					map.put(rs.getInt("AutomovelId"), dep);
+				if (aut == null) {
+					aut = instantiateAutomovel(rs);
+					map.put(rs.getInt("AutomovelId"), aut);
 				}
 				
-				Cliente obj = instantiateCliente(rs, dep);
+				Cliente obj = instantiateCliente(rs, aut);
 				list.add(obj);
 			}
 			return list;
@@ -193,7 +196,7 @@ public class ClienteDaoJDBC implements ClienteDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT cliente.*,automovel.Nome as DepNome "
+					"SELECT cliente.*,automovel.Nome as AutoNome "
 					+ "FROM cliente INNER JOIN automovel "
 					+ "ON cliente.AutomovelId = automovel.Id "
 					+ "WHERE AutomovelId = ? "
@@ -208,14 +211,14 @@ public class ClienteDaoJDBC implements ClienteDao {
 			
 			while (rs.next()) {
 				
-				Automovel dep = map.get(rs.getInt("AutomovelId"));
+				Automovel aut = map.get(rs.getInt("AutomovelId"));
 				
-				if (dep == null) {
-					dep = instantiateAutomovel(rs);
-					map.put(rs.getInt("AutomovelId"), dep);
+				if (aut == null) {
+					aut = instantiateAutomovel(rs);
+					map.put(rs.getInt("AutomovelId"), aut);
 				}
 				
-				Cliente obj = instantiateCliente(rs, dep);
+				Cliente obj = instantiateCliente(rs, aut);
 				list.add(obj);
 			}
 			return list;

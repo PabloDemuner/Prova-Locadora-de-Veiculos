@@ -1,7 +1,7 @@
 package gui;
 
-import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -16,9 +16,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -26,8 +24,6 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.entidades.Cliente;
 import modelo.services.ClienteService;
@@ -49,7 +45,10 @@ public class ClienteListController implements Initializable, DataChangeListener 
 	private TableColumn<Cliente, String> tableColumNome;
 
 	@FXML
-	private TableColumn<Cliente, String> tableColumMarca;
+	private TableColumn<Cliente, String> tableColumEmail;
+	
+	@FXML
+	private TableColumn<Cliente, Date> tableColumDataNasc;
 	
 	//Coluna de Edição de Cliente
 	@FXML
@@ -87,7 +86,10 @@ public class ClienteListController implements Initializable, DataChangeListener 
 		// padrão do JavaFX para iniciar o comportamento das colunas
 		tableColumId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		tableColumNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-		tableColumMarca.setCellValueFactory(new PropertyValueFactory<>("marca"));
+		tableColumEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+		tableColumDataNasc.setCellValueFactory(new PropertyValueFactory<>("dataNasc"));
+		Utils.formatTableColumnDate(tableColumDataNasc, "dd/MM/yyyy");
+		
 
 		// Metodo para a tabela Cliente ocupar toda a janela
 		Stage stage = (Stage) Main.getMainScene().getWindow();

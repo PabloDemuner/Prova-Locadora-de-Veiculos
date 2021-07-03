@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="299.0" prefWidth="492.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.AutomovelListController">
+<VBox prefHeight="299.0" prefWidth="449.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.AutomovelListController">
    <children>
       <Label prefHeight="32.0" prefWidth="186.0" text="Registro de Automóveis">
          <font>
@@ -26,11 +26,11 @@
       </ToolBar>
       <TableView fx:id="tableViewAutomovel" prefHeight="200.0" prefWidth="200.0">
         <columns>
-          <TableColumn fx:id="tableColumId" prefWidth="75.0" text="Id" />
-          <TableColumn fx:id="tableColumNome" prefWidth="75.0" text="Nome" />
-            <TableColumn fx:id="tableColumMarca" prefWidth="75.0" text="Marca" />
-            <TableColumn fx:id="tableColumEdit" prefWidth="75.0" />
-            <TableColumn fx:id="tableColumDelete" prefWidth="75.0" />
+          <TableColumn fx:id="tableColumId" prefWidth="53.0" text="Id" />
+          <TableColumn fx:id="tableColumNome" prefWidth="113.0" text="Nome" />
+            <TableColumn fx:id="tableColumMarca" prefWidth="77.0" text="Marca" />
+            <TableColumn fx:id="tableColumEdit" prefWidth="89.0" />
+            <TableColumn fx:id="tableColumDelete" prefWidth="108.0" />
         </columns>
       </TableView>
    </children>
