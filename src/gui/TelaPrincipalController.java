@@ -16,6 +16,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import modelo.services.AluguelService;
 import modelo.services.AutomovelService;
 import modelo.services.ClienteService;
 
@@ -26,6 +27,9 @@ public class TelaPrincipalController implements Initializable {
 
 	@FXML
 	private MenuItem menuItemAutomovel;
+	
+	@FXML
+	private MenuItem menuItemAluguel;
 
 	@FXML
 	private MenuItem menuItemAbout;
@@ -46,6 +50,15 @@ public class TelaPrincipalController implements Initializable {
 		loadView("/gui/AutomovelList.fxml", (AutomovelListController automovelListController) -> {
 			automovelListController.setAutomovelService(new AutomovelService());
 			automovelListController.updateTableView();
+		});
+	}
+	
+	@FXML
+	public void onMenuItemAluguelAction() {
+		// expressão lambda para inicializar o AutomovelListController
+		loadView("/gui/AluguelList.fxml", (AluguelListController aluguelListController) -> {
+			aluguelListController.setAluguelService(new AluguelService());
+			aluguelListController.updateTableView();
 		});
 	}
 

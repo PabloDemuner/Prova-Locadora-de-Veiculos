@@ -93,10 +93,11 @@ public class AluguelDaoJDBC implements AluguelDao {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement("SELECT aluguel.*,automovel.Nome as AutNome "
+			st = conn.prepareStatement("SELECT aluguel.*,automovel.Nome as AutNome, cliente.Nome as CliNome "
 					+ "FROM aluguel INNER JOIN automovel " 
 					+ "FROM aluguel INNER JOIN cliente "
 					+ "ON aluguel.AutomovelId = automovel.Id " 
+					+ "ON aluguel.ClienteId = cliente.Id " 
 					+ "WHERE aluguel.Id = ?");
 
 			st.setInt(1, id);
@@ -176,7 +177,7 @@ public class AluguelDaoJDBC implements AluguelDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT aluguel.*,automovel.Nome as AutoNome " 
+					"SELECT aluguel.*,automovel.Nome as AutNome " 
 			+ "FROM aluguel INNER JOIN automovel "						
 			+ "ON aluguel.AutomovelId = automovel.Id " 
 			+ "WHERE AutomovelId = ? " + "ORDER BY Nome");
