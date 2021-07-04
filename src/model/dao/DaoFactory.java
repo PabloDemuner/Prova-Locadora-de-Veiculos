@@ -1,6 +1,7 @@
 package model.dao;
 
 import db.DB;
+import model.dao.impl.AluguelDaoJDBC;
 import model.dao.impl.AutomovelDaoJDBC;
 import model.dao.impl.ClienteDaoJDBC;
 
@@ -12,5 +13,9 @@ public class DaoFactory {
 
 	public static AutomovelDao createAutomovelDao() {
 		return new AutomovelDaoJDBC(DB.getConnection());
+	}
+	
+	public static AluguelDao createAluguelDao() {
+		return new AluguelDaoJDBC(DB.getConnection());
 	}
 }

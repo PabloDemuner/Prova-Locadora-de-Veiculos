@@ -33,7 +33,7 @@ public class TelaPrincipalController implements Initializable {
 	// Declaração dos metodos de ações dos atributos de menus
 	@FXML
 	public void onMenuItemClienteAction() {
-		// expressão lambda para inicializar o AutomovelListController
+		// expressão lambda para inicializar o ClienteListController
 				loadView("/gui/ClienteList.fxml", (ClienteListController clienteListController) -> {
 					clienteListController.setClienteService(new ClienteService());
 					clienteListController.updateTableView();
