@@ -1,9 +1,11 @@
 package gui;
 
 import java.net.URL;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -18,7 +20,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import modelo.entidades.Cliente;
 import modelo.services.ClienteService;
@@ -42,15 +43,6 @@ public class ClienteFormController implements Initializable {
 
 	@FXML
 	private DatePicker dateDataNasc;
-
-	@FXML
-	private Label labelErroNome;
-
-	@FXML
-	private Label labelErroEmail;
-
-	@FXML
-	private Label labelErrodateDataNasc;
 
 	@FXML
 	private Button btSalvar;
@@ -123,10 +115,27 @@ public class ClienteFormController implements Initializable {
 
 	private Cliente getSalvaCliente() {
 		Cliente obj = new Cliente();
+
 		// tryParseToInt faz a conversão de String para Int
 		obj.setId(Utils.tryParseToInt(txtId.getText()));
+
+		if (txtNome.getText() == null || txtNome.getText().trim().equals("")) {
+			Alertas.showAlert("Campo Nome não pode ser vazio", null, null, AlertType.ERROR);
+		}
 		obj.setNome(txtNome.getText());
-		// obj.setMarca(txtMarca.getText());
+
+		if (txtEmail.getText() == null || txtEmail.getText().trim().equals("")) {
+			Alertas.showAlert("Campo E-mail não pode ser vazio", null, null, AlertType.ERROR);
+		}
+		obj.setEmail(txtEmail.getText());
+		
+		if (dateDataNasc.getValue() == null) {
+			Alertas.showAlert("Campo Data de Nascimento não pode ser vazio", null, null, AlertType.ERROR);
+		} else {
+			Instant instant = Instant.from(dateDataNasc.getValue().atStartOfDay(ZoneId.systemDefault()));
+			obj.setDataNasc(Date.from(instant));
+			
+		}
 
 		return obj;
 	}

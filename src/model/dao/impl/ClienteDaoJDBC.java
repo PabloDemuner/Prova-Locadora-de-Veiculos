@@ -30,15 +30,14 @@ public class ClienteDaoJDBC implements ClienteDao {
 		try {
 			st = conn.prepareStatement(
 					"INSERT INTO cliente "
-					+ "(Nome, Email, DataNasc, AutomovelId) "
+					+ "(Nome, Email, DataNasc) "
 					+ "VALUES "
-					+ "(?, ?, ?, ?)",
+					+ "(?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 			
 			st.setString(1, obj.getNome());
 			st.setString(2, obj.getEmail());
 			st.setDate(3, new java.sql.Date(obj.getDataNasc().getTime()));
-			st.setInt(4, obj.getAutomovel().getId());
 			
 			int rowsAffected = st.executeUpdate();
 			
@@ -68,14 +67,13 @@ public class ClienteDaoJDBC implements ClienteDao {
 		try {
 			st = conn.prepareStatement(
 					"UPDATE cliente "
-							+ "SET Nome = ?, Email = ?, DataNasc = ? AutomovelId = ? "
+							+ "SET Nome = ?, Email = ?, DataNasc = ? "
 					+ "WHERE Id = ?");
 			
 			st.setString(1, obj.getNome());
 			st.setString(2, obj.getEmail());
 			st.setDate(3, new java.sql.Date(obj.getDataNasc().getTime()));
-			st.setInt(4, obj.getAutomovel().getId());
-			st.setInt(5, obj.getId());
+			st.setInt(4, obj.getId());
 			
 			st.executeUpdate();
 		}
@@ -158,26 +156,17 @@ public class ClienteDaoJDBC implements ClienteDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT cliente.*,automovel.Nome as AutNome "
-					+ "FROM cliente INNER JOIN automovel "
-					+ "ON cliente.AutomovelId = automovel.Id "
-					+ "ORDER BY Nome");
-			
+				"SELECT * FROM cliente ORDER BY Nome");
 			rs = st.executeQuery();
-			
+
 			List<Cliente> list = new ArrayList<>();
-			Map<Integer, Automovel> map = new HashMap<>();
-			
+
 			while (rs.next()) {
-				
-				Automovel aut = map.get(rs.getInt("AutomovelId"));
-				
-				if (aut == null) {
-					aut = instantiateAutomovel(rs);
-					map.put(rs.getInt("AutomovelId"), aut);
-				}
-				
-				Cliente obj = instantiateCliente(rs, aut);
+				Cliente obj = new Cliente();
+				obj.setId(rs.getInt("Id"));
+				obj.setNome(rs.getString("Nome"));
+				obj.setEmail(rs.getString("Email"));
+				obj.setDataNasc(new java.util.Date(rs.getTimestamp("DataNasc").getTime())); 
 				list.add(obj);
 			}
 			return list;

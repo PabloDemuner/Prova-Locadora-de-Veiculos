@@ -23,9 +23,9 @@ import modelo.services.AutomovelService;
 public class AutomovelFormController implements Initializable {
 
 	private Automovel automovel;
-	
+
 	private AutomovelService automovelService;
-	
+
 	private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
 	@FXML
@@ -57,30 +57,29 @@ public class AutomovelFormController implements Initializable {
 		try {
 			automovel = getSalvaAutomovel();
 			automovelService.saveOrUpdate(automovel);
-			//Atualiza os dados da tela prnicipal ao clicar em salvar
+			// Atualiza os dados da tela prnicipal ao clicar em salvar
 			notificaDadosDaTela();
-			//Para fechar a janela
+			// Para fechar a janela
 			Utils.paucoAtual(event).close();
-		} 
-		catch (DbException exception) {
+		} catch (DbException exception) {
 			Alertas.showAlert("Erro ao salvar os dados do automovel", null, exception.getMessage(), AlertType.ERROR);
 		}
 	}
 
 	@FXML
 	public void OnBtCancel(ActionEvent event) {
-		//Para fechar a janela
+		// Para fechar a janela
 		Utils.paucoAtual(event).close();
 	}
 
 	public void setAutomovel(Automovel automovel) {
 		this.automovel = automovel;
 	}
-	
+
 	public void setAutomovelService(AutomovelService automovelService) {
 		this.automovelService = automovelService;
 	}
-	
+
 	public void atualizaDadosDaTela(DataChangeListener dataChangeListener) {
 		dataChangeListeners.add(dataChangeListener);
 	}
@@ -105,18 +104,26 @@ public class AutomovelFormController implements Initializable {
 		txtNome.setText(automovel.getNome());
 		txtMarca.setText(automovel.getMarca());
 	}
-	
+
 	private Automovel getSalvaAutomovel() {
 		Automovel obj = new Automovel();
-		//tryParseToInt faz a conversão de String para Int
+		// tryParseToInt faz a conversão de String para Int
 		obj.setId(Utils.tryParseToInt(txtId.getText()));
+
+		if (txtNome.getText() == null || txtNome.getText().trim().equals("")) {
+			Alertas.showAlert("Campo Nome não pode ser vazio", null, null, AlertType.ERROR);
+		}
 		obj.setNome(txtNome.getText());
+
+		if (txtMarca.getText() == null || txtMarca.getText().trim().equals("")) {
+			Alertas.showAlert("Campo Marca não pode ser vazio", null, null, AlertType.ERROR);
+		}
 		obj.setMarca(txtMarca.getText());
-		
+
 		return obj;
 	}
-	
-	//Subjects
+
+	// Subjects
 	private void notificaDadosDaTela() {
 		for (DataChangeListener dataChangeListener : dataChangeListeners) {
 			dataChangeListener.disparaAtualizacaoEventos();
