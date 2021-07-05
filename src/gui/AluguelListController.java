@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +17,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -24,13 +27,21 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.entidades.Aluguel;
 import modelo.services.AluguelService;
+import modelo.services.AutomovelService;
+import modelo.services.ClienteService;
 
 public class AluguelListController implements Initializable, DataChangeListener {
 
 	private AluguelService aluguelService;
+	
+	private ClienteService clienteService;
+	
+	private AutomovelService automovelService;
 
 	// @FXML para SceneBuilder reconhecer os menus
 	// Declaração da tabela Aluguel
@@ -117,31 +128,34 @@ public class AluguelListController implements Initializable, DataChangeListener 
 
 	// Metodo implementado para instanciar janela de dialogos
 	private void createDialogForm(Aluguel obj, String absoluteName, Stage parentStage) {
-//		try {
-//			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
-//			Pane pane = loader.load();
-//
-//			AluguelFormController aluguelFormController = loader.getController();
-//			aluguelFormController.setAluguel(obj);
-//			//Injeção do AluguelService
-//			aluguelFormController.setAluguelService(new AluguelService());
-//			//Observer
-//			aluguelFormController.atualizaDadosDaTela(this);
-//			aluguelFormController.atualizarAluguel();
-//
-//			Stage dialogStage = new Stage();
-//
-//			dialogStage.setTitle("Digite os dados do Aluguel");
-//			dialogStage.setScene(new Scene(pane));
-//			// Janela não pode ser redimencionada
-//			dialogStage.setResizable(false);
-//			dialogStage.initOwner(parentStage);
-//			// Para a janela ficar travada
-//			dialogStage.initModality(Modality.WINDOW_MODAL);
-//			dialogStage.showAndWait();
-//		} catch (IOException e) {
-//			Alertas.showAlert("IO Exception", "Erro ao carregar a janela", e.getMessage(), AlertType.ERROR);
-//		}
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+			Pane pane = loader.load();
+
+			AluguelFormController aluguelFormController = loader.getController();
+			aluguelFormController.setAluguel(obj);
+			//Injeção dos Services
+			aluguelFormController.setServices(new AluguelService(), new ClienteService(), new AutomovelService());
+			aluguelFormController.carregaComboBoxCliente();
+			aluguelFormController.carregaComboBoxAutomovel();
+			//Observer
+			aluguelFormController.atualizaDadosDaTela(this);
+			aluguelFormController.atualizarAluguel();
+
+			Stage dialogStage = new Stage();
+
+			dialogStage.setTitle("Digite os dados do Aluguel");
+			dialogStage.setScene(new Scene(pane));
+			// Janela não pode ser redimencionada
+			dialogStage.setResizable(false);
+			dialogStage.initOwner(parentStage);
+			// Para a janela ficar travada
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
+			Alertas.showAlert("IO Exception", "Erro ao carregar a janela", e.getMessage(), AlertType.ERROR);
+		}
 	}
 
 	@Override

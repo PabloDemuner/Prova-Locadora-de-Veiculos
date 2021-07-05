@@ -29,11 +29,16 @@ public class AluguelDaoJDBC implements AluguelDao {
 	public void insert(Aluguel obj) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement("INSERT INTO aluguel " + "(DataInicio, DataFim) " + "VALUES " + "(?, ?)",
+			st = conn.prepareStatement(
+					"INSERT INTO aluguel " 
+			        + "(DataInicio, DataFim, ClienteId, AutomovelId) " 
+					+ "VALUES " + "(?, ?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 
 			st.setDate(1, new java.sql.Date(obj.getDataInicio().getTime()));
 			st.setDate(2, new java.sql.Date(obj.getDataFim().getTime()));
+			st.setInt(3, obj.getCliente().getId());
+			st.setInt(4, obj.getAutomovel().getId());
 
 			int rowsAffected = st.executeUpdate();
 
@@ -58,11 +63,16 @@ public class AluguelDaoJDBC implements AluguelDao {
 	public void update(Aluguel obj) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement("UPDATE aluguel " + "SET DataInicio = ?, DataFim = ? " + "WHERE Id = ?");
+			st = conn.prepareStatement(
+					"UPDATE aluguel " 
+			+ "SET DataInicio = ?, DataFim = ?, ClienteId = ?, AutomovelId = ? " 
+			+ "WHERE Id = ?");
 
 			st.setDate(1, new java.sql.Date(obj.getDataInicio().getTime()));
 			st.setDate(2, new java.sql.Date(obj.getDataFim().getTime()));
-			st.setInt(3, obj.getId());
+			st.setInt(3, obj.getCliente().getId());
+			st.setInt(4, obj.getAutomovel().getId());
+			st.setInt(5, obj.getId());
 
 			st.executeUpdate();
 		} catch (SQLException e) {
