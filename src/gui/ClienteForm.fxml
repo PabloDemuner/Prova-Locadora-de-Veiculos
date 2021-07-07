@@ -40,7 +40,7 @@
             <Label text="E-mail" GridPane.rowIndex="2" />
             <TextField fx:id="txtEmail" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label text="Data de Nascimento" GridPane.rowIndex="3" />
-            <Label text="Automovel" GridPane.rowIndex="4" />
+            <Label GridPane.rowIndex="4" />
             <DatePicker fx:id="dateDataNasc" prefHeight="25.0" prefWidth="206.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Button fx:id="btCancelar" mnemonicParsing="false" onAction="#OnBtCancel" text="Cancelar" GridPane.columnIndex="2" GridPane.rowIndex="4">
                <GridPane.margin>

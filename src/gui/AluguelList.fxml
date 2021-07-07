@@ -26,11 +26,11 @@
       </ToolBar>
       <TableView fx:id="tableViewAluguel" prefHeight="200.0" prefWidth="745.0">
         <columns>
-          <TableColumn fx:id="tableColumId" prefWidth="75.0" text="Id" />
+          <TableColumn fx:id="tableColumId" prefWidth="75.0" text="Id " />
           <TableColumn fx:id="tableColumDataInicio" prefWidth="105.0" text="Data de saída" />
             <TableColumn fx:id="tableColumDataFim" prefWidth="106.0" text="Data de entrega" />
-            <TableColumn fx:id="tableColumNomeCliente" prefWidth="112.0" text="Nome do Cliente" />
-            <TableColumn fx:id="tableColumNomeAutomovel" prefWidth="123.0" text="Nome do Automovel" />
+            <TableColumn fx:id="tableColumNomeCliente" prefWidth="112.0" text="Id do Cliente" />
+            <TableColumn fx:id="tableColumNomeAutomovel" prefWidth="123.0" text="Id do Automovel" />
             <TableColumn fx:id="tableColumEdit" minWidth="0.0" prefWidth="73.0" />
             <TableColumn fx:id="tableColumDelete" minWidth="4.0" prefWidth="87.0" />
         </columns>
